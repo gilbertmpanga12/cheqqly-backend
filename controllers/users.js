@@ -3,16 +3,17 @@ module.exports.createUser = (collectionName) => {
         let body = req.body;
         try{
             collectionName.doc(body.merchantId).set({
-                firstName: body.firstName,
-                lastName: body.lastName,
+                businessName: body.businessName,
                 email: body.email,
-                phoneNumber: body.phoneNumber,
-                merchantId: body.merchantId
+                password: body.password,
+                merchantId: body.merchantId,
+                firstName: body.firstName,
+                lastName: body.lastName
             }).then(user => {
-                res.status(200).send({message:'Profile successfully created'});
+                res.status(200).send({message:'Account successfully created'});
             });
         }catch(err){
-            res.status(500).send({message:'Failed to create user. Something went wrong'});
+            res.status(500).send({message:'Failed to create account. Something went wrong'});
         }
     }
 }

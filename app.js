@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const admin = require('firebase-admin');
 const serviceAccount = require("./config.json");
 const usersController = require('./controllers/users');
+const paymentsController = require('./controllers/payments');
 // const puppeteer = require('puppeteer');
 
 
@@ -55,21 +56,21 @@ app.use((req,res,next) => {
 
 
 
-app.post('/app/charge',(req,res) => {
-res.send('Successfully charged');
-});
+
 
 
 
 const userCollection = admin.firestore().collection('users');
 const paymentRequest = admin.firestore().collection('paymentsRequests');
+const revenueCollected = admin.firestore().collection('revenueCollected');
+
 
 app.post('/app/new-account',usersController.createUser(userCollection));
 app.put('/app/edit-name',usersController.editNames(userCollection));
 app.put('/app/edit-phone',usersController.phoneNumber(usersController));
 app.put('/app/edit-email',usersController.email(userCollection));
 app.post('/app/make-request',usersController.paymentRequest(paymentRequest));
-
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected));
 
 
 app.listen(3001,() => {
