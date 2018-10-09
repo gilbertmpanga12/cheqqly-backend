@@ -7,6 +7,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require("./config.json");
 const usersController = require('./controllers/users');
 const paymentsController = require('./controllers/payments');
+const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc') //test secret
 // const puppeteer = require('puppeteer');
 
 
@@ -69,7 +70,7 @@ app.put('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.post('/app/make-request',verify(),usersController.paymentRequest(paymentRequest));
-app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected));
+app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected,stripe));
 
 
 app.listen(3002,() => {
