@@ -9,7 +9,7 @@ module.exports.storeRevenue = (collectionName,stripe) => {
                 description: 'Example charge',
                 source: stripeToken,
                 statement_descriptor: 'Custom descriptor',
-                capture: 'False',
+                capture: false,
                 metadata: {
                     amount: body.amount,
                     merchantId: body.merchantId,
@@ -20,18 +20,36 @@ module.exports.storeRevenue = (collectionName,stripe) => {
               }).catch(error => {
                 console.log('failed to charge customer');
               });
-            collectionName.doc(body.merchantId).set({
+            collectionName.add({
                 amount: body.amount,
                 merchantId: body.merchantId,
                 date: Date.now() 
             }).then(user => {
                 res.status(200).send({message:`Successully paid ${body.amount} to ${body.businessName}`});
             });
+           
+
         }catch(err){
             res.status(500).send({message:`
             Failed to process payment. Please check if you entered right card 
             details or check is card is credited
             `});
         }
+    }
+}
+module.exports.getTotalRevenue = (collectionName) => {
+    return async(req,res) => {
+        let body = req.body;
+        let total = 0;
+            try{
+               await userCollection.doc(body.merchantId).get().then(snapShot => {
+                    snapShot.forEach(doc => {
+                        total += doc.data().amount;
+                    });
+                });
+                res.send({total: total});
+            }catch(error){
+                res.send({message: `Failed to fetch revenue. Something went wrong`});
+            }
     }
 }
