@@ -5,7 +5,6 @@ module.exports.createUser = (collectionName) => {
             collectionName.doc(body.merchantId).set({
                 businessName: body.businessName,
                 email: body.email,
-                password: body.password,
                 merchantId: body.merchantId,
                 firstName: body.firstName,
                 lastName: body.lastName

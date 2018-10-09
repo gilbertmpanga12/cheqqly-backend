@@ -12,7 +12,7 @@ const paymentsController = require('./controllers/payments');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cheqqly-web.firebaseio.com"
+  databaseURL: "https://cheqqly-app.firebaseio.com"
 });
 
 const firestoreConfig = admin.firestore();
@@ -41,20 +41,19 @@ Pupbot
   })();
 
 */
-
-
-app.use((req,res,next) => {
-    let idToken = body.req.idToken;
-    admin.auth().verifyIdToken(idToken).then((claims) => {
-        if (claims.uid) {
-          next();
-        }
-    }).catch(error => {
-        res.send({message: 'Invalid user'}).end();
-    })
-});
-
-
+const verify = () => {
+    return (req,res,next) => {
+        let idToken = req.body._idToken;
+        console.log('my token',idToken)
+        admin.auth().verifyIdToken(idToken).then((claims) => {
+            if (claims.uid) {
+              next();
+            }
+        }).catch(error => {
+            res.send({message: 'Invalid user'}).end();
+        });
+    }
+}
 
 
 
@@ -65,14 +64,14 @@ const paymentRequest = admin.firestore().collection('paymentsRequests');
 const revenueCollected = admin.firestore().collection('revenueCollected');
 
 
-app.post('/app/new-account',usersController.createUser(userCollection));
-app.put('/app/edit-name',usersController.editNames(userCollection));
-app.put('/app/edit-phone',usersController.phoneNumber(usersController));
-app.put('/app/edit-email',usersController.email(userCollection));
-app.post('/app/make-request',usersController.paymentRequest(paymentRequest));
-app.post('/app/charge',paymentsController.storeRevenue(revenueCollected));
+app.post('/app/new-account', verify(),usersController.createUser(userCollection));
+app.put('/app/edit-name',verify(),usersController.editNames(userCollection));
+app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
+app.put('/app/edit-email',verify(),usersController.email(userCollection));
+app.post('/app/make-request',verify(),usersController.paymentRequest(paymentRequest));
+app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected));
 
 
-app.listen(3001,() => {
+app.listen(3002,() => {
 console.log('App started at 3000');
 });
