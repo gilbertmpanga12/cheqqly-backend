@@ -7,7 +7,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require("./config.json");
 const usersController = require('./controllers/users');
 const paymentsController = require('./controllers/payments');
-const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc') //test secret
+const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc'); //test secret
 // const puppeteer = require('puppeteer');
 
 
@@ -24,7 +24,8 @@ firestoreConfig.settings({
 
 app.use(cors());
 app.use(helmet());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 /*
 Pupbot
 (async () => {
@@ -44,8 +45,7 @@ Pupbot
 */
 const verify = () => {
     return (req,res,next) => {
-        let idToken = req.body._idToken;
-        console.log('my token',idToken)
+        let idToken = req.get('Authorization');
         admin.auth().verifyIdToken(idToken).then((claims) => {
             if (claims.uid) {
               next();
@@ -68,12 +68,12 @@ const revenueCollected = admin.firestore().collection('revenueCollected');
 
 
 app.post('/app/new-account', verify(),usersController.createUser(userCollection));
-app.put('/app/edit-name',verify(),usersController.editNames(userCollection));
+app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.post('/app/make-request',verify(),usersController.paymentRequest(paymentRequest));
 app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected,stripe));
-app.get('/app/get-revenue',paymentsController.getTotalRevenue(revenueCollected));
+app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 
 app.listen(3002,() => {
 console.log('App started at 3000');

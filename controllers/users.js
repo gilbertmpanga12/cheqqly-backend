@@ -17,16 +17,19 @@ module.exports.createUser = (collectionName) => {
     }
 }
 module.exports.editNames = (collectionName) => {
-    return (req,res) => {
+    return async (req,res) => {
         let body = req.body;
         try{
-            collectionName.doc(body.merchantId).update({
+           await  collectionName.doc(body.merchantId).update({
                 firstName: body.firstName,
                 lastName: body.lastName
             }).then(user => {
                 res.status(200).send({message:'Names  successfully updated'});
-            });
+            }).catch(err => {
+                res.status(200).send({message:'Name doesn\'s exist'});
+            })
         }catch(err){
+            console.log(err);
             res.status(500).send({message:'Failed to update names. Something went wrong'});
         }
     }
