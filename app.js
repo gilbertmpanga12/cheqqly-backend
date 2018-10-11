@@ -8,6 +8,7 @@ const serviceAccount = require("./config.json");
 const usersController = require('./controllers/users');
 const paymentsController = require('./controllers/payments');
 const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc'); //test secret
+const compression = require('compression');
 // const puppeteer = require('puppeteer');
 
 
@@ -24,6 +25,7 @@ firestoreConfig.settings({
 
 app.use(cors());
 app.use(helmet());
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 /*
