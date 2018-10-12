@@ -6,7 +6,8 @@ module.exports.createUser = (collectionName) => {
                 businessName: body.businessName,
                 merchantId: body.merchantId,
                 firstName: body.firstName,
-                lastName: body.lastName
+                lastName: body.lastName,
+                country: body.country
             }).then(user => {
                 res.status(200).send({message:'Account successfully created'});
             });
@@ -66,19 +67,19 @@ module.exports.email = (collectionName) => {
     }
 }
 
-module.exports.paymentRequest = (collectionName) => {
-    return (req,res) => {
-        let body = req.body;
-        try{
-            collectionName.add({
-                requestMessage: `${body.fullName} requests ${body.amount}`,
-                date: Date.now(),
-                requester: body.requester
-            }).then(()  => {
-                res.status(200).send({message:'Request sent!'});
-            });
-        }catch(err){
-            res.status(500).send({message:'Failed to send request! Something went wrong'});
-        }
-    }
-}
+// module.exports.paymentRequest = (collectionName) => {
+//     return (req,res) => {
+//         let body = req.body;
+//         try{
+//             collectionName.add({
+//                 requestMessage: `${body.fullName} requests ${body.amount}`,
+//                 date: Date.now(),
+//                 requester: body.requester
+//             }).then(()  => {
+//                 res.status(200).send({message:'Request sent!'});
+//             });
+//         }catch(err){
+//             res.status(500).send({message:'Failed to send request! Something went wrong'});
+//         }
+//     }
+// }

@@ -73,9 +73,9 @@ app.post('/app/new-account', verify(),usersController.createUser(userCollection)
 app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
-app.post('/app/make-request',verify(),usersController.paymentRequest(paymentRequest));
 app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected,stripe));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
+app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
 
 app.listen(3002,() => {
 console.log('App started at 3000');

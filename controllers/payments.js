@@ -53,3 +53,22 @@ module.exports.getTotalRevenue = (collectionName) => {
             }
     }
 }
+module.exports.requestWithdraw = (collectionName) => {
+    return async (req,res) => {
+        let body = req.body;
+        try{
+            await collectionName.doc(body.merchantId).set({
+                withdrawOptions: body.withdrawOptions,
+                customWithdraw: body.customWithdraw,
+                reason: body.reason,
+                amount: body.amount,
+                date: Date.now()
+            }).then(user => {
+                res.status(200).send({message:'Request sent successfully. We\'ll get back to you'});
+            });
+        }catch(error){
+            console.log(error);
+            res.send({message: `Failed to fetch revenue. Something went wrong`});
+        }
+    }
+}
