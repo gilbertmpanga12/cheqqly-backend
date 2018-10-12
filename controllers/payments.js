@@ -39,13 +39,15 @@ module.exports.storeRevenue = (collectionName,stripe) => {
 }
 module.exports.getTotalRevenue = (collectionName) => {
     return async(req,res) => {
-        let body = req.body;
+        let body = req.query;
         let total = 0;
             try{
-               await userCollection.doc(body.merchantId).get().then(snapShot => {
-                    snapShot.forEach(doc => {
-                        total += doc.data().amount;
-                    });
+               await collectionName.where('merchantId','==',body.merchantId).get().then(snapShot => {
+                    if(snapShot){
+                        snapShot.forEach(doc => {
+                            total += doc.data().amount;
+                        });
+                    }
                 });
                 res.send({total: total});
             }catch(error){
@@ -70,5 +72,24 @@ module.exports.requestWithdraw = (collectionName) => {
             console.log(error);
             res.send({message: `Failed to fetch revenue. Something went wrong`});
         }
+    }
+}
+module.exports.allTranscations = (collectionName) => {
+    return async(req,res) => {
+        let body = req.query;
+        console.log(body);
+        let arrayKeeper = [];
+            try{
+               await collectionName.where('merchantId','==',body.merchantId).get().then(snapShot => {
+                snapShot.forEach(doc => {
+                        console.log('all_transaction',doc);
+                        arrayKeeper.push(data.doc());
+                    });
+                });
+                res.send({transactions: arrayKeeper});
+            }catch(error){
+                console.log(error);
+                res.send({message: `Failed to fetch all transactions. Something went wrong`,errorData:[]});
+            }
     }
 }

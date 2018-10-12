@@ -9,6 +9,7 @@ const usersController = require('./controllers/users');
 const paymentsController = require('./controllers/payments');
 const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc'); //test secret
 const compression = require('compression');
+// const nodemailer = require('nodemailer');
 // const puppeteer = require('puppeteer');
 
 
@@ -76,7 +77,9 @@ app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected,stripe));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
-
+app.get('/app/get-profile',verify(),usersController.getProfile(userCollection));
+app.get('/app/get-transactions',verify(),paymentsController.allTranscations(revenueCollected));
+app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.listen(3002,() => {
 console.log('App started at 3000');
 });

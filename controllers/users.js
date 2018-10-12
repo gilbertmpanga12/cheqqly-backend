@@ -7,7 +7,8 @@ module.exports.createUser = (collectionName) => {
                 merchantId: body.merchantId,
                 firstName: body.firstName,
                 lastName: body.lastName,
-                country: body.country
+                country: body.country,
+                phoneNumber: ''
             }).then(user => {
                 res.status(200).send({message:'Account successfully created'});
             });
@@ -63,6 +64,23 @@ module.exports.email = (collectionName) => {
             })
         }catch(err){
             res.status(500).send({message:'Failed to update email. Something went wrong'});
+        }
+    }
+}
+
+module.exports.getProfile = (collectionName) => {
+    return async(req,res) => {
+        try{
+            let body = 'IQjAvG3gz3d2duohsPtspsF34uO2';
+            console.log('xvxv',body)
+        await collectionName.doc(body).get().then(user =>{
+            console.log(user.data());
+                res.send(user.data());
+        }).catch(err => {
+                res.send({message: 'Something went wrong while getting account details!'})
+        });
+        }catch(err){
+            res.send({message: 'Failed to get profile. Something went wrong'});
         }
     }
 }
