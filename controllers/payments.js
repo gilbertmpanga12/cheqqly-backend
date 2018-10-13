@@ -101,3 +101,8 @@ module.exports.allTranscations = (collectionName) => {
             }
     }
 }
+module.exports.notifications = () => {
+    return (req,res) => {
+        res.send([]);
+    }
+}

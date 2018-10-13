@@ -81,6 +81,7 @@ app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(pay
 app.get('/app/get-profile',verify(),usersController.getProfile(userCollection));
 app.get('/app/get-transactions',verify(),paymentsController.allTranscations(revenueCollected));
 app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
+app.get('/app/all-notifications',verify(),paymentsController.notifications);
 app.listen(3002,() => {
 console.log('App started at 3000');
 });

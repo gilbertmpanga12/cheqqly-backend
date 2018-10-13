@@ -87,11 +87,13 @@ module.exports.businessName = (collectionName) => {
 module.exports.getProfile = (collectionName) => {
     return async(req,res) => {
         try{
-            let body = 'IQjAvG3gz3d2duohsPtspsF34uO2';
-            console.log('xvxv',body)
-        await collectionName.doc(body).get().then(user =>{
-            console.log(user.data());
-                res.send(user.data());
+            let body = req.query;
+            let result;
+        await collectionName.where('merchantId','==',body.merchantId).get().then(user =>{
+            user.forEach(doc => {
+                result = doc.data();
+            });
+            res.send(result);
         }).catch(err => {
                 res.send({message: 'Something went wrong while getting account details!'})
         });
@@ -100,6 +102,7 @@ module.exports.getProfile = (collectionName) => {
         }
     }
 }
+
 
 // module.exports.paymentRequest = (collectionName) => {
 //     return (req,res) => {
