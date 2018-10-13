@@ -28,7 +28,7 @@ app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 /*
 Pupbot
 (async () => {
@@ -69,12 +69,13 @@ const revenueCollected = admin.firestore().collection('revenueCollected');
 
 
 
-
+// verify(),
 app.post('/app/new-account', verify(),usersController.createUser(userCollection));
 app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
-app.post('/app/charge',verify(),paymentsController.storeRevenue(revenueCollected,stripe));
+app.put('/app/edit-businessname',verify(),usersController.businessName(userCollection));
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
 app.get('/app/get-profile',verify(),usersController.getProfile(userCollection));

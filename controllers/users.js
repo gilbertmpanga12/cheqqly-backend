@@ -67,6 +67,22 @@ module.exports.email = (collectionName) => {
         }
     }
 }
+module.exports.businessName = (collectionName) => {
+    return (req,res) => {
+        let body = req.body;
+        try{
+            collectionName.doc(body.merchantId).update({
+                businessName: body.businessName
+            }).then(business  => {
+                res.status(200).send({message:'Business name successfully updated'});
+            }).catch(err => {
+                res.status(200).send({message:'Business name doesn\'s exist'});
+            })
+        }catch(err){
+            res.status(500).send({message:'Failed to update Business name . Something went wrong'});
+        }
+    }
+}
 
 module.exports.getProfile = (collectionName) => {
     return async(req,res) => {
