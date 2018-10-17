@@ -40,6 +40,7 @@ module.exports.storeRevenue = (collectionName,stripe) => {
         }
     }
 }
+
 module.exports.getTotalRevenue = (collectionName) => {
     return async(req,res) => {
         let body = req.query;
@@ -105,4 +106,30 @@ module.exports.notifications = () => {
     return (req,res) => {
         res.send([]);
     }
+}
+module.exports.testCharge = (stripe_test) => {
+    return  (req,res) => {
+        let body = req.body;
+        let stripeToken = req.body;
+        console.log(stripeToken.id);
+         stripe_test.charges.create({
+            amount: body.amount,
+            currency: 'usd',
+            description: 'Example charge',
+            source: stripeToken.id,
+            statement_descriptor: 'Custom descriptor',
+            capture: false,
+            metadata: {
+                amount: body.amount,
+                merchantId: body.merchantId,
+                date: Date.now()
+            }
+          }).then(charged => {
+              
+             res.status(200).send('You have successfully paid $24');
+          }).catch(error => {
+              console.log(error);
+            res.status(500).send('failed to charge card');
+          });
+        }
 }
