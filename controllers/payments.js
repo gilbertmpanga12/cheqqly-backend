@@ -2,14 +2,14 @@ module.exports.storeRevenue = (collectionName,stripe) => {
     return async (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
-        console.log(stripeToken.id);
+        let amount = body.amount * 100;
         try{
+            /*statement_descriptor: 'Custom descriptor',*/
             await stripe.charges.create({
-                amount: body.amount,
-                currency: 'usd',
-                description: 'Example charge',
+                amount: amount,
+                currency: 'usd', // body.currency
+                description: `Payment: ${body.amount} sent to ${body.businessName}`,
                 source: stripeToken.id,
-                statement_descriptor: 'Custom descriptor',
                 capture: false,
                 metadata: {
                     amount: body.amount,
@@ -17,6 +17,7 @@ module.exports.storeRevenue = (collectionName,stripe) => {
                     date: Date.now()
                 }
               }).then(charged => {
+                  console.log(charged);
                   console.log('Charged user successfully');
               }).catch(error => {
                   console.log(error);
@@ -25,9 +26,9 @@ module.exports.storeRevenue = (collectionName,stripe) => {
             await collectionName.add({
                 amount: body.amount,
                 merchantId: body.merchantId,
-                date: Date.now() 
+                date: Date.now()
             }).then(user => {
-                res.status(200).send({message:`Successully paid ${body.amount} to ${body.businessName}`});
+                res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
             });
             
            
@@ -73,6 +74,7 @@ module.exports.requestWithdraw = (collectionName) => {
                 customWithdraw: body.customWithdraw,
                 reason: body.reason,
                 amount: body.amount,
+                bankAccount: body.bankAccount,
                 date: Date.now()
             }).then(user => {
                 res.status(200).send({message:'Request sent successfully. We\'ll get back to you'});
@@ -111,22 +113,22 @@ module.exports.testCharge = (stripe_test) => {
     return  (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
+        let amount = body.amount * 100;
         console.log(stripeToken.id);
          stripe_test.charges.create({
-            amount: body.amount,
-            currency: 'usd',
-            description: 'Example charge',
+            amount: amount,
+            description:  `Payment: ${amount} sent to ${body.businessName}`,
             source: stripeToken.id,
-            statement_descriptor: 'Custom descriptor',
             capture: false,
+            currency: 'usd',
             metadata: {
-                amount: body.amount,
+                amount: amount,
                 merchantId: body.merchantId,
                 date: Date.now()
             }
           }).then(charged => {
               
-             res.status(200).send('You have successfully paid $24');
+             res.status(200).send(`You have successfully sent $${amount*1/100}`);
           }).catch(error => {
               console.log(error);
             res.status(500).send('failed to charge card');

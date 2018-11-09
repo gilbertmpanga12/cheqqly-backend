@@ -76,7 +76,7 @@ app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.put('/app/edit-businessname',verify(),usersController.businessName(userCollection));
-app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe));
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe_test));
 app.post('/app/test-charge',paymentsController.testCharge(stripe_test));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
@@ -85,7 +85,7 @@ app.get('/app/get-transactions',verify(),paymentsController.allTranscations(reve
 app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.get('/app/all-notifications',verify(),paymentsController.notifications);
 
-
-app.listen(process.env.PORT,() => {
-console.log('App started at 3000');
+// process.env.PORT
+app.listen(3002,() => {
+console.log('App started at 3002');
 });
