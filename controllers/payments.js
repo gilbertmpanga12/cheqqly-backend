@@ -2,9 +2,20 @@ module.exports.storeRevenue = (collectionName,stripe) => {
     return async (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
-        let amount = body.amount * 100;
+        let amount = parseFloat(body.amount) * 100;
         try{
             /*statement_descriptor: 'Custom descriptor',*/
+
+            await collectionName.add({
+                amount: parseFloat(body.amount),
+                merchantId: body.merchantId,
+                date: Date.now()
+            }).then(user => {
+                console.log(user);
+            }).catch(error => {
+                console.log(error);
+            });
+            
             await stripe.charges.create({
                 amount: amount,
                 currency: 'usd', // body.currency
@@ -19,18 +30,13 @@ module.exports.storeRevenue = (collectionName,stripe) => {
               }).then(charged => {
                   console.log(charged);
                   console.log('Charged user successfully');
+                  res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
               }).catch(error => {
                   console.log(error);
                 console.log('failed to charge customer');
+                res.status(500).send({message: `Card declined. Please check your details`});
               });
-            await collectionName.add({
-                amount: body.amount,
-                merchantId: body.merchantId,
-                date: Date.now()
-            }).then(user => {
-                res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
-            });
-            
+
            
 
         }catch(err){
@@ -53,7 +59,7 @@ module.exports.getTotalRevenue = (collectionName) => {
                         numberOfCustomers = snapShot.size;
                         snapShot.forEach(doc => {
                             console.log(doc.data().amount);
-                            total += doc.data().amount;
+                            total +=  parseFloat(doc.data().amount);
                             
                         });
                     }
@@ -113,7 +119,7 @@ module.exports.testCharge = (stripe_test) => {
     return  (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
-        let amount = body.amount * 100;
+        let amount = parseFloat(body.amount) * 100;
         console.log(stripeToken.id);
          stripe_test.charges.create({
             amount: amount,
@@ -122,7 +128,7 @@ module.exports.testCharge = (stripe_test) => {
             capture: false,
             currency: 'usd',
             metadata: {
-                amount: amount,
+                amount: body.amount,
                 merchantId: body.merchantId,
                 date: Date.now()
             }
