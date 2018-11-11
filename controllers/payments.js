@@ -3,22 +3,12 @@ module.exports.storeRevenue = (collectionName,stripe) => {
         let body = req.body;
         let stripeToken = req.body;
         let amount = parseFloat(body.amount) * 100;
-        let date = `${new Date().getDay()}-${new Date().getMonth()}-${new Date().getFullYear()}`
+        //let date = `${new Date().getDay()}-${new Date().getMonth()}-${new Date().getFullYear()}`
         try{
             /*statement_descriptor: 'Custom descriptor',*/
-
-            await collectionName.add({
-                amount: parseFloat(body.amount),
-                merchantId: body.merchantId,
-                date: Date.now(),
-                businessName: body.businessName
-            }).then(user => {
-                console.log(user);
-            }).catch(error => {
-                console.log(error);
-            });
             
-            await stripe.charges.create({
+
+          await stripe.charges.create({
                 amount: amount,
                 currency: 'usd', // body.currency
                 description: `Payment: ${body.amount} sent to ${body.businessName}`,
@@ -32,13 +22,19 @@ module.exports.storeRevenue = (collectionName,stripe) => {
               }).then(charged => {
                   console.log(charged);
                   console.log('Charged user successfully');
+                  collectionName.add({
+                    amount: parseFloat(body.amount),
+                    merchantId: body.merchantId,
+                    date: Date.now(),
+                    businessName: body.businessName
+                }).then(user => {
+                    console.log(user);
+                });
+              
                   res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
-              }).catch(error => {
-                  console.log(error);
-                console.log('failed to charge customer');
+              }).catch(err => {
                 res.status(500).send({message: `Card declined. Please check your details`});
               });
-
            
 
         }catch(err){
