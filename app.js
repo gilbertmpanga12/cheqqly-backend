@@ -99,6 +99,6 @@ app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenue
 app.get('/app/all-notifications',verify(),paymentsController.notifications);
 
 // process.env.PORT
-app.listen(process.env.PORT,() => {
+app.listen(process.env.PORT || 5000,() => {
 console.log('App started at 3002');
 });
