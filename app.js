@@ -10,7 +10,7 @@ const paymentsController = require('./controllers/payments');
 const stripe = require('stripe')('sk_live_f71xveBbU5d1tV7yTZSSlNDG'); //test secret
 const stripe_test = require('stripe')('sk_test_BQokikJOvBiI2HlWgH4olfQ2');
 const compression = require('compression');
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 // const puppeteer = require('puppeteer');
 
 
@@ -76,7 +76,7 @@ app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.put('/app/edit-businessname',verify(),usersController.businessName(userCollection));
-app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe_test));
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe));
 app.post('/app/test-charge',paymentsController.testCharge(stripe_test));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
@@ -86,6 +86,6 @@ app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenue
 app.get('/app/all-notifications',verify(),paymentsController.notifications);
 
 // process.env.PORT
-app.listen(3002,() => {
+app.listen(process.env.PORT,() => {
 console.log('App started at 3002');
 });

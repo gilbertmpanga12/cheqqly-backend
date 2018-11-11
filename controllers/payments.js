@@ -3,13 +3,15 @@ module.exports.storeRevenue = (collectionName,stripe) => {
         let body = req.body;
         let stripeToken = req.body;
         let amount = parseFloat(body.amount) * 100;
+        let date = `${new Date().getDay()}-${new Date().getMonth()}-${new Date().getFullYear()}`
         try{
             /*statement_descriptor: 'Custom descriptor',*/
 
             await collectionName.add({
                 amount: parseFloat(body.amount),
                 merchantId: body.merchantId,
-                date: Date.now()
+                date: Date.now(),
+                businessName: body.businessName
             }).then(user => {
                 console.log(user);
             }).catch(error => {
