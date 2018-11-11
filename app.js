@@ -10,7 +10,7 @@ const paymentsController = require('./controllers/payments');
 const stripe = require('stripe')('sk_live_f71xveBbU5d1tV7yTZSSlNDG'); //test secret
 const stripe_test = require('stripe')('sk_test_BQokikJOvBiI2HlWgH4olfQ2');
 const compression = require('compression');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 // const puppeteer = require('puppeteer');
 
 
