@@ -10,7 +10,9 @@ module.exports.storeRevenue = (collectionName,stripe,app,admin) => {
             
             if(body.amount !== '' && body.businessName !== ''
              && body.email !== '' 
-            && body.address !== '' && body.state !== '' && city !== '' && body.address !== ''){
+            && body.address_line1
+            !== '' && body.state !== '' && body.address_city
+            !== '' && body.address !== ''){
 
           await stripe.charges.create({
             amount: amount,
@@ -21,7 +23,9 @@ module.exports.storeRevenue = (collectionName,stripe,app,admin) => {
             metadata: {
                 amount: body.amount,
                 merchantId: body.merchantId,
-                date: Date.now()
+                date: Date.now(),
+                address_city: body.address_line1,
+                customerEmail: body.email
             }
           }).then(charged => {
               console.log(charged);
@@ -34,8 +38,9 @@ module.exports.storeRevenue = (collectionName,stripe,app,admin) => {
                 customerContact: body.email,
                 country: body.country,
                 state: body.state,
-                address: body.address,
-                city: body.city
+                address: body.address_line1,
+                city: body.address_city
+
             }).then(user => {
                 console.log(user);
                 app.emit('onSuccessfulPayment',{email:body.email,businessName:body.businessName,
