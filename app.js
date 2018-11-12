@@ -13,6 +13,8 @@ const stripe = require('stripe')('sk_live_f71xveBbU5d1tV7yTZSSlNDG');
 const stripe_test = require('stripe')('sk_test_PwLVZila4ct2mOp9gOaRfiNx');
 const compression = require('compression');
 const mailBot = require('./controllers/email');
+const bitlyClient = require('bitly');
+const bitly = bitlyClient('8410febad86b47141fde3f7be12ce2897de38c20');
 
 // const puppeteer = require('puppeteer');
 
@@ -102,6 +104,7 @@ app.get('/app/get-profile',verify(),usersController.getProfile(userCollection));
 app.get('/app/get-transactions',verify(),paymentsController.allTranscations(revenueCollected));
 app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.get('/app/all-notifications',verify(),paymentsController.notifications);
+app.post('/app/get-terminal-link',verify(),usersController.generateShortUrl(userCollection,bitly));
 
 // process.env.PORT
 app.listen(process.env.PORT || 5000,() => {

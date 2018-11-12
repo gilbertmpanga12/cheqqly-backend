@@ -120,3 +120,19 @@ module.exports.getProfile = (collectionName) => {
 //         }
 //     }
 // }
+
+module.exports.generateShortUrl = (collectionName, bitly) => {
+    return (req,res) => {
+        let body = req.body;
+        collectionName.doc(body.merchantId).get().then(doc => {
+            let data = doc.data();
+
+            const link = bitly.shorten(`https://terminal-cheqqly.firebaseapp.com/
+            app/${data.merchantId}/${data.businessName}`);
+            res.send({shortLink: link.data.url});
+
+        }).catch((error) => {
+            res.send({message: 'OOps! Something went wrong while generating url link'});
+        });
+    }
+}
