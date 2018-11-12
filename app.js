@@ -13,8 +13,8 @@ const stripe = require('stripe')('sk_live_f71xveBbU5d1tV7yTZSSlNDG');
 const stripe_test = require('stripe')('sk_test_PwLVZila4ct2mOp9gOaRfiNx');
 const compression = require('compression');
 const mailBot = require('./controllers/email');
-const bitlyClient = require('bitly');
-const bitly = bitlyClient('8410febad86b47141fde3f7be12ce2897de38c20');
+const BitlyClient = require('bitly');
+const bitly =  new BitlyClient.BitlyClient('8410febad86b47141fde3f7be12ce2897de38c20');
 
 // const puppeteer = require('puppeteer');
 
@@ -65,6 +65,9 @@ Pupbot
   })();
 
 */
+
+
+
 const verify = () => {
     return (req,res,next) => {
         let idToken = req.get('Authorization');
