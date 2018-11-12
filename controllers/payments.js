@@ -1,4 +1,4 @@
-module.exports.storeRevenue = (collectionName,stripe,app) => {
+module.exports.storeRevenue = (collectionName,stripe,app,admin) => {
     return async (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
@@ -31,7 +31,9 @@ module.exports.storeRevenue = (collectionName,stripe,app) => {
                 }).then(user => {
                     console.log(user);
                     app.emit('onSuccessfulPayment',{email:body.email,businessName:body.businessName,
-                        amount:body.amount, transactionId: user.id});
+                        amount:body.amount, transactionId: user.id, merchantId: body.merchantId,
+                    admin: admin
+                    });
                 });
                 
                   res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});

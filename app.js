@@ -88,7 +88,11 @@ const userCollection = admin.firestore().collection('users');
 const paymentRequest = admin.firestore().collection('paymentsRequests');
 const revenueCollected = admin.firestore().collection('revenueCollected');
 
-
+// admin.auth().getUser('MkNdIywLV1bmvyN5TXxBYChuKJp1').then(usr => {
+//     console.log(usr.email);
+// }).catch(err => {
+//     console.log(err);
+// })
 
 // verify(),
 app.post('/app/new-account', verify(),usersController.createUser(userCollection));
@@ -96,7 +100,7 @@ app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.put('/app/edit-businessname',verify(),usersController.businessName(userCollection));
-app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe_test,app));
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe_test,app,admin));
 app.post('/app/test-charge',paymentsController.testCharge(stripe_test));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
