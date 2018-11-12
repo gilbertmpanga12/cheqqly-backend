@@ -123,7 +123,7 @@ font-size:10px;
         Hello there,
       </h4><span style=
       "font-size:14px;color:#c88039;font-weight:bold;text-decoration:none;font-size:16px;">You
-      sent a payment of ${data.amount} to
+      sent a payment of $${data.amount} to
       ${data.businessName}.</span><br />
       <br />
       <h4>
@@ -159,10 +159,10 @@ font-size:10px;
                 Payment to ${data.businessName}
               </td>
               <td>
-                55577855
+                1
               </td>
               <td>
-                55577854
+                $${data.amount}
               </td>
             </tr>
           </table><br />
@@ -191,7 +191,7 @@ font-size:10px;
 
 let bussinessMail = {
     from: '"Gilbert Mpanga" <gilbertmpanga.gm@gmail.com>', // sender address
-    subject: `You have received  a payment from a customer from Cheqqly`, // Subject line
+    subject: `You have received  a payment from a customer - Cheqqly`, // Subject line
     text: `
     Cheqqly
     `, // plain text body
@@ -285,8 +285,8 @@ font-size:10px;
         Hello there,
       </h4><span style=
       "font-size:14px;color:#c88039;font-weight:bold;text-decoration:none;font-size:16px;">You
-      sent a payment of ${data.amount} to
-      ${data.businessName}.</span><br />
+      have received a payment of $${data.amount} from one of your customers through Cheqqly
+      .</span><br />
       <br />
       <h4>
         It may take a few moments for this transaction to appear in
@@ -321,10 +321,10 @@ font-size:10px;
                 Payment to ${data.businessName}
               </td>
               <td>
-                55577855
+                1
               </td>
               <td>
-                55577854
+                $${data.amount}
               </td>
             </tr>
           </table><br />
