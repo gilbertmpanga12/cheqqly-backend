@@ -1,8 +1,9 @@
-module.exports.storeRevenue = (collectionName,stripe) => {
+module.exports.storeRevenue = (collectionName,stripe,app) => {
     return async (req,res) => {
         let body = req.body;
         let stripeToken = req.body;
         let amount = parseFloat(body.amount) * 100;
+        
         //let date = `${new Date().getDay()}-${new Date().getMonth()}-${new Date().getFullYear()}`
         try{
             /*statement_descriptor: 'Custom descriptor',*/
@@ -29,8 +30,10 @@ module.exports.storeRevenue = (collectionName,stripe) => {
                     businessName: body.businessName
                 }).then(user => {
                     console.log(user);
+                    app.emit('onSuccessfulPayment',{email:body.email,businessName:body.businessName,
+                        amount:body.amount, transactionId: user.id});
                 });
-              
+                
                   res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
               }).catch(err => {
                 res.status(500).send({message: `Card declined. Please check your details`});
