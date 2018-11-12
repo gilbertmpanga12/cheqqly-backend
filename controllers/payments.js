@@ -8,38 +8,52 @@ module.exports.storeRevenue = (collectionName,stripe,app,admin) => {
         try{
             /*statement_descriptor: 'Custom descriptor',*/
             
+            if(body.amount !== '' && body.businessName !== ''
+             && body.email !== '' 
+            && body.address !== '' && body.state !== '' && city !== '' && body.address !== ''){
 
           await stripe.charges.create({
-                amount: amount,
-                currency: 'usd', // body.currency
-                description: `Payment: ${body.amount} sent to ${body.businessName}`,
-                source: stripeToken.id,
-                capture: false,
-                metadata: {
-                    amount: body.amount,
-                    merchantId: body.merchantId,
-                    date: Date.now()
-                }
-              }).then(charged => {
-                  console.log(charged);
-                  console.log('Charged user successfully');
-                  collectionName.add({
-                    amount: parseFloat(body.amount),
-                    merchantId: body.merchantId,
-                    date: Date.now(),
-                    businessName: body.businessName
-                }).then(user => {
-                    console.log(user);
-                    app.emit('onSuccessfulPayment',{email:body.email,businessName:body.businessName,
-                        amount:body.amount, transactionId: user.id, merchantId: body.merchantId,
-                    admin: admin
-                    });
+            amount: amount,
+            currency: 'usd', // body.currency
+            description: `Payment: ${body.amount} sent to ${body.businessName}`,
+            source: stripeToken.id,
+            capture: false,
+            metadata: {
+                amount: body.amount,
+                merchantId: body.merchantId,
+                date: Date.now()
+            }
+          }).then(charged => {
+              console.log(charged);
+              console.log('Charged user successfully');
+              collectionName.add({
+                amount: parseFloat(body.amount),
+                merchantId: body.merchantId,
+                date: Date.now(),
+                businessName: body.businessName,
+                customerContact: body.email,
+                country: body.country,
+                state: body.state,
+                address: body.address,
+                city: body.city
+            }).then(user => {
+                console.log(user);
+                app.emit('onSuccessfulPayment',{email:body.email,businessName:body.businessName,
+                    amount:body.amount, transactionId: user.id, merchantId: body.merchantId,
+                admin: admin
                 });
-                
-                  res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
-              }).catch(err => {
-                res.status(500).send({message: `Card declined. Please check your details`});
-              });
+            });
+            
+              res.status(200).send({message:`Successully paid ${amount*1/100} to ${body.businessName}`});
+          }).catch(err => {
+            res.status(500).send({message: `Card declined. Please check your details`});
+          });
+            }else{
+                res.status(500).send({message:`
+            Failed to process payment. Please check if you entered right card 
+            details or check is card is credited
+            `});
+            }
            
 
         }catch(err){
