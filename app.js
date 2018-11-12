@@ -88,13 +88,7 @@ const userCollection = admin.firestore().collection('users');
 const paymentRequest = admin.firestore().collection('paymentsRequests');
 const revenueCollected = admin.firestore().collection('revenueCollected');
 
-// admin.auth().getUser('MkNdIywLV1bmvyN5TXxBYChuKJp1').then(usr => {
-//     console.log(usr.email);
-// }).catch(err => {
-//     console.log(err);
-// })
 
-// verify(),
 app.post('/app/new-account', verify(),usersController.createUser(userCollection));
 app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
@@ -110,6 +104,6 @@ app.get('/app/total-revenue',verify(),paymentsController.getTotalRevenue(revenue
 app.get('/app/all-notifications',verify(),paymentsController.notifications);
 
 // process.env.PORT
-app.listen(5000,() => {
+app.listen(process.env.PORT || 5000,() => {
 console.log('App started at 3002');
 });

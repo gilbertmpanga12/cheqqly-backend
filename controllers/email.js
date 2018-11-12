@@ -295,10 +295,10 @@ font-size:10px;
       <div style="display:flex;">
         <div style="width:45%;">
           <h4>
-            Merchant
+            Customer contact
           </h4>
           <p>
-            ${data.businessName}
+            ${data.email}
           </p>
           <p>
             <a href=
