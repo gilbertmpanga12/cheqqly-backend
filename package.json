@@ -20,7 +20,6 @@
     "start": "node ./app.js"
   },
   "engines": {
-    "node": "9.x",
-    "yarn": ">=1.0.0 <2.0.0"
+    "node": "9.x"
   }
 }
