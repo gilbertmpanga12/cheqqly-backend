@@ -99,7 +99,7 @@ app.post('/app/edit-name',verify(),usersController.editNames(userCollection));
 app.put('/app/edit-phone',verify(),usersController.phoneNumber(usersController));
 app.put('/app/edit-email',verify(),usersController.email(userCollection));
 app.put('/app/edit-businessname',verify(),usersController.businessName(userCollection));
-app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe_test,app,admin));
+app.post('/app/charge',paymentsController.storeRevenue(revenueCollected,stripe,app,admin));
 app.post('/app/test-charge',paymentsController.testCharge(stripe_test));
 app.get('/app/get-revenue',verify(),paymentsController.getTotalRevenue(revenueCollected));
 app.post('/app/request-withdraw',verify(),paymentsController.requestWithdraw(paymentRequest));
@@ -110,6 +110,6 @@ app.get('/app/all-notifications',verify(),paymentsController.notifications);
 app.post('/app/get-terminal-link',verify(),usersController.generateShortUrl(userCollection,bitly));
 
 // process.env.PORT
-app.listen(process.env.PORT || 5000,() => {
+app.listen(8080,() => {
 console.log('App started at 3002');
 });
