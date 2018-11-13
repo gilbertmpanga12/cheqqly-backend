@@ -110,6 +110,6 @@ app.get('/app/all-notifications',verify(),paymentsController.notifications);
 app.post('/app/get-terminal-link',verify(),usersController.generateShortUrl(userCollection,bitly));
 
 // process.env.PORT
-app.listen(8080,() => {
+app.listen(process.env.PORT || 5000,() => {
 console.log('App started at 3002');
 });
