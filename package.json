@@ -2,24 +2,17 @@
   "name": "cheqqly_api",
   "version": "1.0.0",
   "main": "index.js",
+  "author": "gilbert mpanga <gilbertmpanga.gm@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "bitly": "^6.0.8",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "firebase-admin": "^6.0.0",
-    "helmet": "^3.13.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "firebase-admin": "^6.1.0",
+    "helmet": "^3.15.0",
     "nodemailer": "^4.6.8",
-    "puppeteer": "^1.8.0",
-    "socket.io": "^2.1.1",
-    "stripe": "^6.12.1"
-  },
-  "scripts": {
-    "start": "node ./app.js"
-  },
-  "engines": {
-    "node": "9.x"
+    "stripe": "^6.15.0"
   }
 }
