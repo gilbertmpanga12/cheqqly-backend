@@ -7,14 +7,14 @@ const admin = require('firebase-admin');
 // const serviceAccount = require("./config.json");
 const usersController = require('./controllers/users');
 const paymentsController = require('./controllers/payments');
-const stripe = require('stripe')('sk_live_f71xveBbU5d1tV7yTZSSlNDG');
+const stripe = require('stripe')('');
 // pk => pk_test_fCm0HDYhdfBfsQsJHmds82gl
 // tk => sk_test_PwLVZila4ct2mOp9gOaRfiNx
-const stripe_test = require('stripe')('sk_test_PwLVZila4ct2mOp9gOaRfiNx');
+const stripe_test = require('stripe')('');
 const compression = require('compression');
 const mailBot = require('./controllers/email');
 const BitlyClient = require('bitly');
-const bitly =  new BitlyClient.BitlyClient('8410febad86b47141fde3f7be12ce2897de38c20');
+const bitly =  new BitlyClient.BitlyClient('');
 
 // const puppeteer = require('puppeteer');
 
